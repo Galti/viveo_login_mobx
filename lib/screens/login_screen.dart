@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildLogo(),
                 _buildForm(),
@@ -88,7 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Expanded(
                     child: TextButton(
-                      // style: TextButton.styleFrom(),
                       child: Text('Login', style: TextStyle(color: Colors.white)),
                       onPressed: store.validateAll,
                     ),
