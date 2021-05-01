@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:viveo_login_mobx/constants/animation_durations.dart';
@@ -5,6 +7,7 @@ import 'package:viveo_login_mobx/constants/app_colors.dart';
 import 'package:viveo_login_mobx/constants/dimens.dart';
 import 'package:viveo_login_mobx/stores/form/form_store.dart';
 import 'package:viveo_login_mobx/widgets/clip_rectangle.dart';
+import 'package:viveo_login_mobx/widgets/clipped_background.dart';
 import 'package:viveo_login_mobx/widgets/login_button.dart';
 import 'package:viveo_login_mobx/widgets/login_text_field.dart';
 
@@ -45,30 +48,52 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: AppColors.darkBlue,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                buildLogo(),
-                buildForm(),
-                buildButtons(),
-              ],
+      backgroundColor: AppColors.firstLayer,
+      body: Stack(
+        children: [
+          ClippedBackground(),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: LayoutBuilder(builder: (_, constraints) {
+                return Container(
+                  height: constraints.maxHeight,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        buildLogo(),
+                        MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? SizedBox(height: 200)
+                            : SizedBox(height: 20),
+                        buildForm(),
+                        buildButtons(),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  Widget buildLogo() => Column(
-        children: [
-          Row(children: [Text('BRAND', style: TextStyle(color: Colors.white))]),
-          Row(children: [Text('LOGO', style: TextStyle(color: Colors.white))]),
-        ],
-      );
+  Widget buildLogo() {
+    var logoStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Column(
+      children: [
+        Row(children: [Text('BRAND', style: logoStyle)]),
+        Row(children: [Text('LOGO', style: logoStyle)]),
+      ],
+    );
+  }
 
   Widget buildForm() => Column(
         children: [
