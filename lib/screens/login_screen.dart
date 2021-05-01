@@ -18,15 +18,15 @@ class _LoginScreenState extends State<LoginScreen>
   final FormStore store = FormStore();
   bool hasAccount = true;
 
-  late AnimationController _animationController;
-  late Animation<Offset> _animation;
+  late AnimationController animationController;
+  late Animation<Offset> animation;
 
   @override
   void initState() {
     super.initState();
     store.setupValidations();
 
-    _animationController = AnimationController(
+    animationController = AnimationController(
       duration: Duration(milliseconds: AnimationDurations.mainInMil),
       vsync: this,
     );
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void dispose() {
     store.dispose();
-    _animationController.dispose();
+    animationController.dispose();
 
     super.dispose();
   }
@@ -52,9 +52,9 @@ class _LoginScreenState extends State<LoginScreen>
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                _buildLogo(),
-                _buildForm(),
-                _buildButtons(),
+                buildLogo(),
+                buildForm(),
+                buildButtons(),
               ],
             ),
           ),
@@ -63,14 +63,14 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget _buildLogo() => Column(
+  Widget buildLogo() => Column(
         children: [
           Row(children: [Text('BRAND', style: TextStyle(color: Colors.white))]),
           Row(children: [Text('LOGO', style: TextStyle(color: Colors.white))]),
         ],
       );
 
-  Widget _buildForm() => Column(
+  Widget buildForm() => Column(
         children: [
           Observer(
             builder: (_) => LoginTextField(
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen>
         ],
       );
 
-  Widget _buildButtons() => Column(
+  Widget buildButtons() => Column(
         children: [
           ClipRectangle(
             child: Container(
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen>
               child: Stack(
                 children: [
                   SlideTransition(
-                    position: _animation,
+                    position: animation,
                     child: LayoutBuilder(
                       builder: (_, constraints) => ClipRRect(
                         borderRadius: BorderRadius.circular(30),
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen>
         hasAccount = true;
       });
 
-      _animationController.reverse();
+      animationController.reverse();
       store.resetValues();
     }
   }
@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen>
       setState(() {
         hasAccount = false;
 
-        _animationController.forward();
+        animationController.forward();
         store.resetValues();
       });
     } else {
@@ -189,12 +189,12 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   void setAnimation() {
-    _animation = Tween<Offset>(
+    animation = Tween<Offset>(
       begin: Offset(0, 0.0),
       end: Offset(1, 0.0),
     ).animate(
       CurvedAnimation(
-        parent: _animationController,
+        parent: animationController,
         curve: Curves.ease,
       ),
     );
