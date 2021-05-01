@@ -39,6 +39,21 @@ mixin _$FormStore on _FormStore, Store {
     });
   }
 
+  final _$confirmPasswordAtom = Atom(name: '_FormStore.confirmPassword');
+
+  @override
+  String get confirmPassword {
+    _$confirmPasswordAtom.reportRead();
+    return super.confirmPassword;
+  }
+
+  @override
+  set confirmPassword(String value) {
+    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
+      super.confirmPassword = value;
+    });
+  }
+
   final _$_FormStoreActionController = ActionController(name: '_FormStore');
 
   @override
@@ -58,6 +73,28 @@ mixin _$FormStore on _FormStore, Store {
         name: '_FormStore.setPassword');
     try {
       return super.setPassword(value);
+    } finally {
+      _$_FormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setConfirmPassword(String value) {
+    final _$actionInfo = _$_FormStoreActionController.startAction(
+        name: '_FormStore.setConfirmPassword');
+    try {
+      return super.setConfirmPassword(value);
+    } finally {
+      _$_FormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void resetValues() {
+    final _$actionInfo = _$_FormStoreActionController.startAction(
+        name: '_FormStore.resetValues');
+    try {
+      return super.resetValues();
     } finally {
       _$_FormStoreActionController.endAction(_$actionInfo);
     }
@@ -86,10 +123,22 @@ mixin _$FormStore on _FormStore, Store {
   }
 
   @override
+  void validateConfirmPassword(String value) {
+    final _$actionInfo = _$_FormStoreActionController.startAction(
+        name: '_FormStore.validateConfirmPassword');
+    try {
+      return super.validateConfirmPassword(value);
+    } finally {
+      _$_FormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 userName: ${userName},
-password: ${password}
+password: ${password},
+confirmPassword: ${confirmPassword}
     ''';
   }
 }
@@ -125,11 +174,27 @@ mixin _$FormErrorState on _FormErrorState, Store {
     });
   }
 
+  final _$confirmPasswordAtom = Atom(name: '_FormErrorState.confirmPassword');
+
+  @override
+  String? get confirmPassword {
+    _$confirmPasswordAtom.reportRead();
+    return super.confirmPassword;
+  }
+
+  @override
+  set confirmPassword(String? value) {
+    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
+      super.confirmPassword = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 username: ${username},
-password: ${password}
+password: ${password},
+confirmPassword: ${confirmPassword}
     ''';
   }
 }

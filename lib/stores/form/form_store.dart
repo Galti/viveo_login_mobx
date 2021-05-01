@@ -14,12 +14,16 @@ abstract class _FormStore with Store {
   @observable
   String password = '';
 
+  @observable
+  String confirmPassword = '';
+
   late List<ReactionDisposer> _disposers;
 
   void setupValidations() {
     _disposers = [
       reaction((_) => userName, validateUsername),
       reaction((_) => password, validatePassword),
+      reaction((_) => confirmPassword, validateConfirmPassword),
     ];
   }
 
@@ -34,18 +38,37 @@ abstract class _FormStore with Store {
   }
 
   @action
-  void validateUsername(String value) {
-    if (isNull(value) || value.isEmpty) {
-      error.username = 'Cannot be blank';
-      return;
-    }
+  void setConfirmPassword(String value) {
+    confirmPassword = value;
+  }
 
+  @action
+  void resetValues() {
+    confirmPassword = '';
     error.username = null;
+    error.password = null;
+    error.confirmPassword = null;
+  }
+
+  @action
+  void validateUsername(String value) {
+    error.username = isNull(value) || value.isEmpty ? 'Cannot be blank' : null;
   }
 
   @action
   void validatePassword(String value) {
     error.password = isNull(value) || value.isEmpty ? 'Cannot be blank' : null;
+  }
+
+  @action
+  void validateConfirmPassword(String value) {
+    error.confirmPassword =
+        isNull(value) || value.isEmpty ? 'Cannot be blank' : null;
+
+    if (error.confirmPassword == null) {
+      error.confirmPassword =
+          value == password ? null : "Passwords don't match";
+    }
   }
 
   void dispose() {
@@ -54,9 +77,21 @@ abstract class _FormStore with Store {
     }
   }
 
-  void validateAll() {
-    validatePassword(password);
+  bool validateLogin() {
     validateUsername(userName);
+    validatePassword(password);
+
+    return isNull(error.username) && isNull(error.password);
+  }
+
+  bool validateSignUp() {
+    validateUsername(userName);
+    validatePassword(password);
+    validateConfirmPassword(confirmPassword);
+
+    return isNull(error.username) &&
+        isNull(error.password) &&
+        isNull(error.confirmPassword);
   }
 }
 
@@ -68,4 +103,7 @@ abstract class _FormErrorState with Store {
 
   @observable
   String? password;
+
+  @observable
+  String? confirmPassword;
 }
