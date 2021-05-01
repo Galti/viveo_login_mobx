@@ -52,30 +52,33 @@ class _LoginScreenState extends State<LoginScreen>
       body: Stack(
         children: [
           ClippedBackground(),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: LayoutBuilder(builder: (_, constraints) {
-                return Container(
-                  height: constraints.maxHeight,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        buildLogo(),
-                        MediaQuery.of(context).orientation ==
-                                Orientation.portrait
-                            ? SizedBox(height: 200)
-                            : SizedBox(height: 20),
-                        buildForm(),
-                        buildButtons(),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            ),
-          ),
+          buildBody(),
         ],
+      ),
+    );
+  }
+
+  Widget buildBody() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: LayoutBuilder(builder: (_, constraints) {
+          return Container(
+            height: constraints.maxHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildLogo(),
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? SizedBox(height: 200)
+                      : SizedBox(height: 20),
+                  buildForm(),
+                  buildButtons(),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
